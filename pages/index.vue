@@ -1,72 +1,71 @@
 <template>
   <div class="container">
     <div>
-      <logo />
-      <h1 class="title">
-        nuxtjs
-      </h1>
-      <h2 class="subtitle">
-        My astonishing Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
+      <ul>
+        <li v-for="(jeu, index) in jeux_video" :key="index"><NuxtLink :to="`jeu/${index}`">{{jeu.post_title}}</NuxtLink></li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+
+import axios from 'axios';
 
 export default {
-  components: {
-    Logo
+  name: 'homepage',
+  data() {
+    return {
+      jeux_video : []
+    }
+  },
+  mounted() {
+    axios.get('http://sitetest.local/wp-json/wp/v2/jeux_video').then(response => (this.jeux_video = response.data))
   }
 }
 </script>
 
 <style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
 
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
+  :root {
+    --pimary-color: #30475e;
+    --secondary-color: #f05454;
+    --font-color: #222831;
+    --background-color: #dddddd;
+  }
 
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--background-color); 
+    font-family: sans-serif;
+  }
 
-.links {
-  padding-top: 15px;
-}
+  ul li a:link {
+    text-decoration: none;
+    outline: none;
+  }
+
+  ul {
+    position: relative;
+    width: 450px;
+    margin: 100px auto 0;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  ul li {
+    display: flex;
+    background-color: var(--pimary-color);
+    padding: 10px 20px;
+    color: var(--font-color);
+    margin: 5px 0;
+    transition: .5s;
+  }
+
+  ul li:hover {
+    transform: scale(1.1);
+    background-color: var(--secondary-color);
+  }
+  
 </style>
